@@ -769,7 +769,15 @@ window.Modernizr = (function(window,doc,undefined){
                               
                       docElement.removeChild(f);
                               
-                    } else if (/^(search|tel)$/.test(f.type)){
+                    } else if(/^number$/.test(f.type)){
+                      // If range can have a custom test despite breaking the spec, so can number.
+                      f.value = 0;
+					  f.setAttribute('step', 2);
+					  f.value -= 1;
+					  var should_be_false = f.checkValidity();
+					  f.value -= 1;
+					  bool = !should_be_false && f.checkValidity();
+					} else if (/^(search|tel)$/.test(f.type)){
                       // spec doesnt define any special parsing or detectable UI 
                       //   behaviors so we pass these through as true
                       
